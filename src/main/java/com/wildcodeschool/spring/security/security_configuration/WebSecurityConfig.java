@@ -34,11 +34,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-			.authorizeRequests()
-				.antMatchers("/auth**").authenticated()
-				.antMatchers("/auth/admin**").hasAuthority(adminRole)
-				.anyRequest().permitAll()
-				.and()
+		.authorizeRequests()
+			.antMatchers("/auth**").authenticated()
+			.antMatchers("/auth/admin**").hasAuthority(adminRole)
+			.anyRequest().permitAll()
+		.and()
+			.exceptionHandling().accessDeniedPage("/errorAccessUnAuthorised")
+		.and()
 			.formLogin()
 				.loginPage("/login")
 				.defaultSuccessUrl("/auth").failureUrl("/error")

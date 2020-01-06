@@ -16,7 +16,7 @@ public class LoginController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         if (!(auth instanceof AnonymousAuthenticationToken)) {  // l'utilisateur est déjà connecté
-            return new ModelAndView("redirect:/auth");
+            return new ModelAndView("redirect:/errorAlreadyConnected");
         }
         return new ModelAndView("login");
     }
