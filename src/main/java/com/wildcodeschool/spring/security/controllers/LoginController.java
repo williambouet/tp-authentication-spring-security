@@ -15,8 +15,8 @@ public class LoginController {
     public ModelAndView loginGet() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        if (!(auth instanceof AnonymousAuthenticationToken)) {
-            return new ModelAndView("redirect:/profile/notes");
+        if (!(auth instanceof AnonymousAuthenticationToken)) {  // l'utilisateur est déjà connecté
+            return new ModelAndView("redirect:/auth");
         }
         return new ModelAndView("login");
     }
