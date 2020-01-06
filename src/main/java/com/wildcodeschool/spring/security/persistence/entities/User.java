@@ -95,6 +95,7 @@ public class User implements UserDetails {
     public User(String username, String password, String firstname, String lastname, Collection<RoleEnum> roles) {
         this.username = username;
         this.password = BCryptManagerUtil.passwordencoder().encode(password);
+//        this.password = password;
         this.firstname = firstname;
         this.lastname = lastname;
         this.accountNonExpired = true;
@@ -173,37 +174,31 @@ public class User implements UserDetails {
 
 	@Override
 	public String getPassword() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.password;
 	}
 
 	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.username;
 	}
 
 	@Override
 	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.accountNonExpired;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.accountNonLocked;
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.credentialsNonExpired;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.enabled;
 	}
 }
