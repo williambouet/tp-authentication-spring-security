@@ -24,7 +24,7 @@ public class WebMvcConfig implements WebMvcConfigurer{
         List<RoleEnum> userRole = Collections.singletonList(RoleEnum.USER);
         List<RoleEnum> adminRole = Arrays.asList(RoleEnum.USER, RoleEnum.ADMINISTRATOR);
         User user = new User("user", "user", "User", "USER", userRole);
-        User adminUser = new User("admin", "admin1", "Admin", "ADMIN", adminRole);
+        User adminUser = new User("admin", "admin", "Admin", "ADMIN", adminRole);
         userRepository.save(user);
         userRepository.save(adminUser);
     }
