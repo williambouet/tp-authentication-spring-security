@@ -1,57 +1,89 @@
 package com.wildcodeschool.spring.security.security_configuration;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.UserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
 
 import com.wildcodeschool.spring.security.persistence.enums.RoleEnum;
-import com.wildcodeschool.spring.security.utils.BCryptManagerUtil;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
 @EnableWebSecurity
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig {
 
 	private final String adminRole = RoleEnum.ADMINISTRATOR.name();
+	
+	public static PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
-	private final UserDetailsService userDetailsService;
-
-	@Autowired
-	public WebSecurityConfig(UserDetailsService userDetailsService) {
-		this.userDetailsService = userDetailsService;
+	@Bean
+	public PasswordEncoder passwordEncoder() { 
+		return passwordEncoder;
 	}
 
+// 	@Bean
+// 	public UserDetailsManager userDetailsService() {
 
-	@Autowired
-	public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService).passwordEncoder(BCryptManagerUtil.passwordencoder());
-	}
+//         System.out.println("Initializing UserDetailsService");
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
+// var passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+// 		UserDetails user = User.withUsername("louis")
+// 								.password(passwordEncoder.encode("here"))
+// 								.roles("USER").build();
+// 		UserDetails admin = User.withUsername("admin")
+// 								.password(passwordEncoder.encode("hereadmin"))
+// 								.roles("ADMIN").build();
+// 		return new InMemoryUserDetailsManager(List.of(user, admin));
+// 	}
+
+
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        System.out.println("Initializing SecurityFilterChain");
+
 		http
-		.authorizeRequests()
-			.antMatchers("/auth**").authenticated()
-			.antMatchers("/auth/admin**").hasAuthority(adminRole)
-			.anyRequest().permitAll()
-		.and()
-			.exceptionHandling().accessDeniedPage("/errorAccessUnAuthorised")
-		.and()
-			.formLogin()
-				.loginPage("/login")
-				.defaultSuccessUrl("/auth").failureUrl("/error")
-				.usernameParameter("username").passwordParameter("password")
-				.and()
-				.logout().invalidateHttpSession(true).logoutUrl("/logout")
+			.authorizeHttpRequests()
+				.requestMatchers("/auth**").authenticated()
+				.requestMatchers("/auth/admin**").hasAuthority(adminRole)
+				.anyRequest().permitAll()
+			.and()
+				.exceptionHandling().accessDeniedPage("/errorAccessUnAuthorised")
+			.and()
+				.formLogin()
+					.loginPage("/login")
+					.defaultSuccessUrl("/auth")
+					.failureHandler((HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) -> {
+						System.out.println("error during auth");
+						exception.printStackTrace();
+						response.sendRedirect("/error?error=" + exception.getMessage());
+					})
+					.usernameParameter("username")
+					.passwordParameter("password")
+			.and()
+				.logout().invalidateHttpSession(true)
+				.logoutUrl("/logout")
 				.logoutSuccessUrl("/login")
-				.and()
+			.and()
 				.csrf()
-				.and()
+			.and()
 				.sessionManagement().maximumSessions(1)
 				.expiredUrl("/login");
+
+		return http.build();
 	}
 }

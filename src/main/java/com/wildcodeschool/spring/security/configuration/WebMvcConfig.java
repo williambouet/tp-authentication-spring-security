@@ -20,6 +20,10 @@ public class WebMvcConfig implements WebMvcConfigurer{
 
     @Autowired
     public WebMvcConfig(UserRepository userRepository) {
+
+        System.out.println("Initializing users");
+        userRepository.deleteAll();
+        
         // Ceci n'est pas à recopier en production
         List<RoleEnum> userRole = Collections.singletonList(RoleEnum.USER);
         List<RoleEnum> adminRole = Arrays.asList(RoleEnum.USER, RoleEnum.ADMINISTRATOR);
