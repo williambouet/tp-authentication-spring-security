@@ -9,7 +9,7 @@ import org.springframework.context.event.EventListener;
 
 @SpringBootApplication
 public class ExerciseApplication {
-    private static Logger logger = LoggerFactory.getLogger(ExerciseApplication.class);
+	private static Logger logger = LoggerFactory.getLogger(ExerciseApplication.class);
 
 	public static void main(String[] args) {
 		SpringApplication.run(ExerciseApplication.class, args);
