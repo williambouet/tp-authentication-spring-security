@@ -30,16 +30,5 @@ public class ExerciseApplication {
 		logger.info("application started");
 
 		// 2. Initialisation des données
-
-        logger.info("Initializing users");
-        userRepository.deleteAll();
-
-        // Ceci n'est pas à faire en production
-        List<RoleEnum> userRole = List.of(RoleEnum.USER);
-        List<RoleEnum> adminRole = List.of(RoleEnum.USER, RoleEnum.ADMINISTRATOR);
-        User user = new User("user", "user", "User", "USER", userRole);
-        User adminUser = new User("admin", "admin", "Admin", "ADMIN", adminRole);
-        userRepository.save(user);
-        userRepository.save(adminUser);
 	}
 }
