@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -16,14 +18,16 @@ import com.wildcodeschool.spring.security.persistence.repositories.UserRepositor
 
 @EnableWebMvc
 @Configuration
-public class WebMvcConfig implements WebMvcConfigurer{
+public class WebMvcConfig implements WebMvcConfigurer {
+
+    private static Logger logger = LoggerFactory.getLogger(WebMvcConfig.class);
 
     @Autowired
     public WebMvcConfig(UserRepository userRepository) {
 
-        System.out.println("Initializing users");
+        logger.info("Initializing users");
         userRepository.deleteAll();
-        
+
         // Ceci n'est pas à recopier en production
         List<RoleEnum> userRole = Collections.singletonList(RoleEnum.USER);
         List<RoleEnum> adminRole = Arrays.asList(RoleEnum.USER, RoleEnum.ADMINISTRATOR);
