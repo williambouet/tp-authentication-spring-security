@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.AuthenticationException;
@@ -32,22 +33,6 @@ public class WebSecurityConfig {
 		return passwordEncoder;
 	}
 
-// 	@Bean
-// 	public UserDetailsManager userDetailsService() {
-
-//         logger.info("Initializing UserDetailsService");
-
-// var passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-// 		UserDetails user = User.withUsername("louis")
-// 								.password(passwordEncoder.encode("here"))
-// 								.roles("USER").build();
-// 		UserDetails admin = User.withUsername("admin")
-// 								.password(passwordEncoder.encode("hereadmin"))
-// 								.roles("ADMIN").build();
-// 		return new InMemoryUserDetailsManager(List.of(user, admin));
-// 	}
-
-
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         logger.info("Initializing SecurityFilterChain");
@@ -58,7 +43,8 @@ public class WebSecurityConfig {
 				.requestMatchers("/auth/admin**").hasAuthority(adminRole)
 				.anyRequest().permitAll()
 			.and()
-				.exceptionHandling().accessDeniedPage("/errorAccessUnAuthorised")
+				.exceptionHandling()
+				.accessDeniedPage("/errorAccessUnAuthorised")
 			.and()
 				.formLogin()
 					.loginPage("/login")

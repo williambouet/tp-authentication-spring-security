@@ -29,8 +29,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
         userRepository.deleteAll();
 
         // Ceci n'est pas à recopier en production
-        List<RoleEnum> userRole = Collections.singletonList(RoleEnum.USER);
-        List<RoleEnum> adminRole = Arrays.asList(RoleEnum.USER, RoleEnum.ADMINISTRATOR);
+        List<RoleEnum> userRole = List.of(RoleEnum.USER);
+        List<RoleEnum> adminRole = List.of(RoleEnum.USER, RoleEnum.ADMINISTRATOR);
         User user = new User("user", "user", "User", "USER", userRole);
         User adminUser = new User("admin", "admin", "Admin", "ADMIN", adminRole);
         userRepository.save(user);
@@ -44,5 +44,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addViewController("/auth").setViewName("auth/auth");
         registry.addViewController("/auth/admin").setViewName("auth/admin");
         registry.addViewController("/errorAlreadyConnected").setViewName("/errorAlreadyConnected");
+        registry.addViewController("/errorAccessUnAuthorised").setViewName("/errorAccessUnAuthorised");
     }
 }
