@@ -37,6 +37,8 @@ public class WebSecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         logger.info("Initializing SecurityFilterChain");
 
+
+		// 4. Configuration des autorisations de route
 		http
 			.authorizeHttpRequests()
 				.requestMatchers("/auth**").authenticated()

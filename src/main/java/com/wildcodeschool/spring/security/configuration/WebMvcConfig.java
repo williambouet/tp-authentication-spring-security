@@ -24,21 +24,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Autowired
     public WebMvcConfig(UserRepository userRepository) {
-
-        logger.info("Initializing users");
-        userRepository.deleteAll();
-
-        // Ceci n'est pas à recopier en production
-        List<RoleEnum> userRole = List.of(RoleEnum.USER);
-        List<RoleEnum> adminRole = List.of(RoleEnum.USER, RoleEnum.ADMINISTRATOR);
-        User user = new User("user", "user", "User", "USER", userRole);
-        User adminUser = new User("admin", "admin", "Admin", "ADMIN", adminRole);
-        userRepository.save(user);
-        userRepository.save(adminUser);
     }
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
+        logger.info("add view controllers");
         registry.addViewController("/").setViewName("index");
         registry.addViewController("/login").setViewName("login");
         registry.addViewController("/auth").setViewName("auth/auth");
