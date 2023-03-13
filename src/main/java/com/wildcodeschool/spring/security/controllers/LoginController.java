@@ -1,6 +1,5 @@
 package com.wildcodeschool.spring.security.controllers;
 
-
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,7 +14,8 @@ public class LoginController {
     public ModelAndView loginGet() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        if (!(auth instanceof AnonymousAuthenticationToken)) {  // l'utilisateur est déjà connecté
+        if (!(auth instanceof AnonymousAuthenticationToken)) { // l'utilisateur est déjà connecté
+
             return new ModelAndView("redirect:/errorAlreadyConnected");
         }
 

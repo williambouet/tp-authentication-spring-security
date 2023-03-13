@@ -10,7 +10,6 @@ import org.hibernate.annotations.CascadeType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.util.StringUtils;
 
 import jakarta.persistence.Column;
@@ -167,12 +166,6 @@ public class User implements UserDetails {
         String roles = StringUtils.collectionToCommaDelimitedString(getRoles().stream()
                 .map(Enum::name).collect(Collectors.toList()));
         return AuthorityUtils.commaSeparatedStringToAuthorityList(roles);
-    }
-
-    public void setPassword(String password) {
-        if (!password.isEmpty()) {
-            this.password = BCryptManagerUtil.passwordencoder().encode(password);
-        }
     }
 
 	@Override

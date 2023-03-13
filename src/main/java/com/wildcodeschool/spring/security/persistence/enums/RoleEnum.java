@@ -1,5 +1,5 @@
 package com.wildcodeschool.spring.security.persistence.enums;
 
 public enum RoleEnum {
-	USER, ADMINISTRATOR
+	USER, ADMINISTRATOR, SUPER_ADMIN
 }

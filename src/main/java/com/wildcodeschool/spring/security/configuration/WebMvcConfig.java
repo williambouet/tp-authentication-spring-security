@@ -1,8 +1,5 @@
 package com.wildcodeschool.spring.security.configuration;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,8 +9,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.wildcodeschool.spring.security.persistence.entities.User;
-import com.wildcodeschool.spring.security.persistence.enums.RoleEnum;
 import com.wildcodeschool.spring.security.persistence.repositories.UserRepository;
 
 @EnableWebMvc
@@ -33,6 +28,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addViewController("/login").setViewName("login");
         registry.addViewController("/auth").setViewName("auth/auth");
         registry.addViewController("/auth/admin").setViewName("auth/admin");
+        registry.addViewController("/auth/superadmin").setViewName("auth/superadmin");
         registry.addViewController("/errorAlreadyConnected").setViewName("/errorAlreadyConnected");
         registry.addViewController("/errorAccessUnAuthorised").setViewName("/errorAccessUnAuthorised");
     }
